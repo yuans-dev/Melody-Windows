@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Melody-Windows (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Melody-Windows (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

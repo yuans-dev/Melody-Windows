@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="Melody_Windows.Controls.PlayerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Melody_Windows.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="using:Melody_Windows.Converters"
+    HorizontalAlignment="Stretch"
+    mc:Ignorable="d">
+
+    <Grid Height="128" x:Name="player" Padding="12,2,12,2"  Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
+        <Grid.Resources>
+      
+            <Storyboard x:Name="collapse">
+                <DoubleAnimation Duration="00:00:00.300" Storyboard.TargetProperty="Angle" Storyboard.TargetName="buttonTransform" From="0" To="180">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+                <DoubleAnimation Duration="00:00:00.300" Storyboard.TargetProperty="Y" Storyboard.TargetName="controlsTransform" From="0" To="100">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+                <DoubleAnimation EnableDependentAnimation="True" Duration="00:00:00.300" Storyboard.TargetProperty="Height" Storyboard.TargetName="player" From="128" To="32">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+            <Storyboard x:Name="expand">
+                <!--Button Animation-->
+                <DoubleAnimation Duration="00:00:00.1" Storyboard.TargetProperty="Angle" Storyboard.TargetName="buttonTransform" From="180" To="0">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+                <!--Controls Animation-->
+                <DoubleAnimation Duration="00:00:00.300" Storyboard.TargetProperty="Y" Storyboard.TargetName="controlsTransform" From="100" To="0">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="7" EasingMode="EaseOut" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+                <!--Expand Animation-->
+                <DoubleAnimation EnableDependentAnimation="True" Duration="00:00:00.300" Storyboard.TargetProperty="Height" Storyboard.TargetName="player" From="32" To="128">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="7" EasingMode="EaseOut" />
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+
+        </Grid.Resources>
+        <Button Background="Transparent" BorderBrush="Transparent" Click="expandCollapse_Click" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <FontIcon Glyph="&#xE70D;">
+                <FontIcon.RenderTransform>
+                    <RotateTransform x:Name="buttonTransform" CenterX="9.5" CenterY="7"></RotateTransform>
+                </FontIcon.RenderTransform>
+            </FontIcon>
+        </Button>
+        <Grid x:Name="controls" ColumnSpacing="12">
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="controlsTransform" Y="0"></TranslateTransform>
+            </Grid.RenderTransform>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock FontSize="12" VerticalAlignment="Center" Grid.Column="0">00:00</TextBlock>
+            <Slider VerticalAlignment="Center" Grid.Column="1"></Slider>
+        </Grid>
+        
+    </Grid>
+    
+</UserControl>
