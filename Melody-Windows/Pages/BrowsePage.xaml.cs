@@ -38,10 +38,16 @@ namespace Melody_Windows.Pages
         {
             Results.Clear();
             var results = await Spotify.BrowseTracks(sender.Text);
-            foreach(SpotifyTrack track in results)
+            foreach(SpotifyTrack result in results)
             {
-                Results.Add(track);
+                var source = await result.ToYouTubeSource();
+                if (source != null)
+                {
+                    Results.Add(await YouTube.GetVideo(source));
+                }
+                
             }
+
         }
     }
 }

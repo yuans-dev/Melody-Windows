@@ -14,6 +14,7 @@
 
     <Page.Resources>
         <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
+        <converters:DateTimeToCompactDateTimeConverter x:Key="DateTimeToCompactDateTimeConverter"/>
         <DataTemplate x:Key="ResultsTemplate" x:DataType="melody:SingleMedia">
             <ItemContainer HorizontalAlignment="Stretch" Height="128" AutomationProperties.Name="{x:Bind Title}">
                 <Grid ColumnSpacing="12" Padding="6" HorizontalAlignment="Stretch">
@@ -26,16 +27,38 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="18" Text="{x:Bind Title}"></TextBlock>
-                        <TextBlock Grid.Row="1" Text="{x:Bind Authors, Converter={StaticResource AuthorsToStringConverter}}"></TextBlock>
-                        <Grid  VerticalAlignment="Bottom" Grid.Row="2">
-                            <Button Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" Background="{ThemeResource AccentFillColorDefaultBrush}">
+                        <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Grid.Row="1" Text="{x:Bind Authors, Converter={StaticResource AuthorsToStringConverter}}"></TextBlock>
+
+                        <StackPanel  Orientation="Horizontal" Grid.Row="2" Spacing="6">
+                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Date, Converter={StaticResource DateTimeToCompactDateTimeConverter}}"></TextBlock>
+                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" VerticalAlignment="Center" FontSize="6">⬤</TextBlock>
+                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Duration, Converter={StaticResource DateTimeToCompactDateTimeConverter}}"></TextBlock>
+                        </StackPanel>
+                        <Grid ColumnSpacing="6" VerticalAlignment="Bottom" Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" Background="{ThemeResource AccentFillColorDefaultBrush}">
                                 <StackPanel Orientation="Horizontal" Spacing="6">
                                     <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE896;"></FontIcon>
-                                    <TextBlock FontSize="12" VerticalAlignment="Center">Download</TextBlock>
+                                    <TextBlock FontSize="12"  VerticalAlignment="Center">Download</TextBlock>
                                 </StackPanel>
+                            </Button>
+                            <Button Grid.Column="1" ToolTipService.ToolTip="Play">
+                                <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE768;"/>
+                            </Button>
+                            <Button Grid.Column="2" ToolTipService.ToolTip="Copy link">
+                                <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE71B;"/>
+                            </Button>
+                            <Button Grid.Column="3" >
+                                <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE712;"/>
                             </Button>
                         </Grid>
                     </Grid>
@@ -47,9 +70,22 @@
     <Grid Padding="12,12,12,12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <AutoSuggestBox Grid.Row="0" QuerySubmitted="searchBox_QuerySubmitted" VerticalAlignment="Top" Height="Auto" x:Name="searchBox"></AutoSuggestBox>
-        <ItemsView HorizontalAlignment="Stretch" Grid.Row="1" ItemTemplate="{StaticResource ResultsTemplate}" ItemsSource="{x:Bind Results}"></ItemsView>
+        <AutoSuggestBox QueryIcon="Find" 
+                Grid.Row="0" 
+                QuerySubmitted="searchBox_QuerySubmitted" 
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch"
+                Height="Auto" 
+                x:Name="searchBox"></AutoSuggestBox>
+        <SelectorBar Grid.Row="1">
+            <SelectorBarItem Text="Tracks"></SelectorBarItem>
+            <SelectorBarItem Text="Albums"></SelectorBarItem>
+            <SelectorBarItem Text="Playlists"></SelectorBarItem>
+            <SelectorBarItem Text="Artists"></SelectorBarItem>
+        </SelectorBar>
+        <ItemsView HorizontalAlignment="Stretch" Grid.Row="2" ItemTemplate="{StaticResource ResultsTemplate}" ItemsSource="{x:Bind Results}"></ItemsView>
     </Grid>
 </Page>
