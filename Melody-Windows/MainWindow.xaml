@@ -13,7 +13,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <NavigationView Grid.Row="0" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" Loaded="navView_Loaded" SelectionChanged="navView_SelectionChanged" x:Name="navView" PaneTitle="Melody">
+        <NavigationView Grid.Row="0" IsBackEnabled="True" BackRequested="navView_BackRequested" Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}" Loaded="navView_Loaded" SelectionChanged="navView_SelectionChanged" x:Name="navView" PaneTitle="Melody">
             <NavigationView.MenuItems>
                 <NavigationViewItem Tag="Home" Icon="Home" Content="Home"/>
                 <NavigationViewItem Tag="Browse"  Icon="Find" Content="Browse"/>

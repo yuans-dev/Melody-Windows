@@ -31,6 +31,10 @@ namespace Melody_Windows
         {
             this.InitializeComponent();
             ExtendsContentIntoTitleBar = true;
+            pageHistoryStack = new Stack<Type>();
+        }
+        private readonly Stack<Type> pageHistoryStack;
+        private bool IsGoingBack = false;
             CurrentInstance = this;
         }
         public static MainWindow CurrentInstance;
@@ -53,7 +57,7 @@ namespace Melody_Windows
             if (args.IsSettingsSelected)
             {
                 sender.Header = "Settings";
-                contentFrame.Navigate(typeof(SettingsPage));
+                pageType = typeof(SettingsPage);
             }
             else
             {
@@ -78,6 +82,26 @@ namespace Melody_Windows
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void navView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            if (pageHistoryStack.Count != 0) { 
+                IsGoingBack = true;
+                var pageType = pageHistoryStack.Pop();
+                sender.SelectedItem = SelectNavigationViewItemFromTag(pageType.Name.Substring(0, pageType.Name.Length - 4));
+            }
+        }
+        private NavigationViewItem SelectNavigationViewItemFromTag(string tag)
+        {
+            foreach(NavigationViewItem item in navView.MenuItems)
+            {
+                if((string)item.Tag == tag)
+                {
+                    return item;
+                }
+            }
+            return null;
         }
     }
 }
