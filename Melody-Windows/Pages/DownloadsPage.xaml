@@ -7,9 +7,51 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:melody="using:Melody_Windows.Downloads"
+    xmlns:converters="using:Melody_Windows.Converters"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Page.Resources>
+        <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
+        <converters:DateTimeToCompactDateTimeConverter x:Key="DateTimeToCompactDateTimeConverter"/>
+        <converters:ProgressConverter x:Key="ProgressConverter"/>
+        <DataTemplate x:Key="ResultsTemplate" x:DataType="melody:DownloadItem">
+            <ItemContainer HorizontalAlignment="Stretch" Height="128" AutomationProperties.Name="{x:Bind Media.Title}">
+                <Grid ColumnSpacing="12" Padding="6" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind Media.ImageURL}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>
+                    <Grid Padding="0,6,0,6" Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="18" Text="{x:Bind Media.Title}"></TextBlock>
+                        <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Grid.Row="1" Text="{x:Bind Media.Authors, Converter={StaticResource AuthorsToStringConverter}}"></TextBlock>
 
+                        <StackPanel  Orientation="Horizontal" Grid.Row="2" Spacing="6">
+                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Status,Mode=OneWay}"></TextBlock>
+                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" VerticalAlignment="Center" FontSize="6">⬤</TextBlock>
+                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind ProgressValue,Mode=OneWay,Converter={StaticResource ProgressConverter}}"></TextBlock>
+                        </StackPanel>
+                        <ProgressBar Grid.Row="3" Value="{x:Bind ProgressValue, Mode=OneWay}"></ProgressBar>
+                        <Grid ColumnSpacing="6" VerticalAlignment="Bottom" Grid.Row="3">
+                            
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ItemContainer>
+        </DataTemplate>
+
+    </Page.Resources>
+    <Grid Padding="12,12,12,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ItemsView SelectionMode="None" HorizontalAlignment="Stretch" Grid.Row="2" ItemTemplate="{StaticResource ResultsTemplate}" ItemsSource="{Binding Downloads}"></ItemsView>
     </Grid>
 </Page>

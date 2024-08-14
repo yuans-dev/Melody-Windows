@@ -1,3 +1,5 @@
+using Melody_Windows.Downloads;
+using Melody_Windows.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -7,6 +9,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -26,6 +29,8 @@ namespace Melody_Windows.Pages
         public DownloadsPage()
         {
             this.InitializeComponent();
+            this.DataContext = (DownloadsViewModel)Application.Current.Resources["DownloadsViewModel"];
         }
+
     }
 }

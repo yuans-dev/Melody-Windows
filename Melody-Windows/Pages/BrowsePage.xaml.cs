@@ -1,4 +1,8 @@
 using Melody;
+using Melody_Windows.Downloads;
+using Melody_Windows.Pages.Subpages;
+using Melody_Windows.ViewModels;
+using Melody_Windows.Search;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -12,7 +16,9 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -28,26 +34,72 @@ namespace Melody_Windows.Pages
     {
         public BrowsePage()
         {
+
             this.InitializeComponent();
-            
-            Results = [];
+            cancellationTokenSource = new CancellationTokenSource();
+            DownloadsViewModel = (DownloadsViewModel)Application.Current.Resources["DownloadsViewModel"];
         }
-        private readonly ObservableCollection<Media> Results;
-
-        private async void searchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        
+        
+        private readonly DownloadsViewModel DownloadsViewModel;
+        private CancellationTokenSource cancellationTokenSource;
+        private bool IsLoading = false;
+        
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            Results.Clear();
-            var results = await Spotify.BrowseTracks(sender.Text);
-            foreach(SpotifyTrack result in results)
-            {
-                var source = await result.ToYouTubeSource();
-                if (source != null)
-                {
-                    Results.Add(await YouTube.GetVideo(source));
-                }
-                
-            }
+            cancellationTokenSource.Cancel();
+            cancellationTokenSource = new CancellationTokenSource();
 
+            var selectedItem = BrowseSelectorBar.SelectedItem;
+
+            ExecuteQuery(sender.Text, selectedItem.Tag.ToString().ParseSearchType());
         }
+
+        private void BrowseSelectorBar_SelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
+        {
+            ExecuteQuery(SearchBox.Text, sender.SelectedItem.Tag.ToString().ParseSearchType());
+        }
+
+        private void BrowseSelectorBar_Loaded(object sender, RoutedEventArgs e)
+        {
+            var selectorBar = sender as SelectorBar;
+            selectorBar.SelectedItem = selectorBar.Items[0];
+        }
+        private void ExecuteQuery(string query, SearchType searchType)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return;
+            }
+            Debug.WriteLine($"Executing query : {query} : {searchType}");
+            switch (searchType)
+            {
+                case SearchType.Tracks:
+                    {
+                        ResultsFrame.Navigate(typeof(TracksPage), new QueryParams(query, DownloadsViewModel, cancellationTokenSource));
+                        break;
+                    }
+                case SearchType.Albums:
+                    {
+                        ResultsFrame.Navigate(typeof(AlbumsPage), new QueryParams(query, DownloadsViewModel, cancellationTokenSource));
+                        break;
+                    }
+                case SearchType.SpotifyPlaylists:
+                    {
+                        ResultsFrame.Navigate(typeof(PlaylistsPage), new QueryParams(query, DownloadsViewModel, cancellationTokenSource));
+                        break;
+                    }
+                case SearchType.Videos:
+                    {
+                        ResultsFrame.Navigate(typeof(VideosPage), new QueryParams(query, DownloadsViewModel, cancellationTokenSource));
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+        
     }
 }
