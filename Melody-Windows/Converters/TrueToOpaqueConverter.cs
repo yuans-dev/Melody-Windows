@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Melody_Windows.Converters
 {
-    public class TrueToVisibleConverter : IValueConverter
+    public class TrueToOpaqueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-           if(value is bool isVisible)
+            if (value is bool isVisible)
             {
                 if (isVisible)
                 {
-                    return Visibility.Visible;
+                    return (double)1;
                 }
                 else
                 {
-                    return Visibility.Collapsed;
+                    return (double)0;
                 }
             }
             else
@@ -31,9 +31,9 @@ namespace Melody_Windows.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            if (value is Visibility visibility)
+            if (value is double opacity)
             {
-                if (visibility == Visibility.Visible)
+                if (opacity == 1)
                 {
                     return true;
                 }

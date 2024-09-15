@@ -8,67 +8,103 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:melody="using:Melody"
+    xmlns:controls="using:Melody_Windows.Controls"
     xmlns:converters="using:Melody_Windows.Converters"
     NavigationCacheMode="Required"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
     <local:ResultsPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResultsPageDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="VideoResultsTemplate" x:DataType="melody:SingleMedia">
+                <ItemContainer HorizontalAlignment="Stretch" Height="128" AutomationProperties.Name="{x:Bind Title}">
+                    <Grid ColumnSpacing="12" Padding="6" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0" CornerRadius="{StaticResource ControlCornerRadius}" Margin="4">
+                            <Image  Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImageURL}"  AutomationProperties.AccessibilityView="Raw"/>
+                        </Grid>
+                        <Grid Padding="0,6,0,6" Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="18" Text="{x:Bind Title}"></TextBlock>
+                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Grid.Row="1" Text="{x:Bind Authors, Converter={StaticResource AuthorsToStringConverter}}"></TextBlock>
 
-        <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
-        <converters:DateTimeToCompactDateTimeConverter x:Key="DateTimeToCompactDateTimeConverter"/>
-        <DataTemplate x:Key="ResultsTemplate" x:DataType="melody:SingleMedia">
-            <ItemContainer HorizontalAlignment="Stretch" Height="128" AutomationProperties.Name="{x:Bind Title}">
-                <Grid ColumnSpacing="12" Padding="6" HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{x:Bind ImageURL}" Margin="4" AutomationProperties.AccessibilityView="Raw"/>
-                    <Grid Padding="0,6,0,6" Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="18" Text="{x:Bind Title}"></TextBlock>
-                        <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Grid.Row="1" Text="{x:Bind Authors, Converter={StaticResource AuthorsToStringConverter}}"></TextBlock>
-
-                        <StackPanel  Orientation="Horizontal" Grid.Row="2" Spacing="6">
-                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Date, Converter={StaticResource DateTimeToCompactDateTimeConverter}}"></TextBlock>
-                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" VerticalAlignment="Center" FontSize="6">⬤</TextBlock>
-                            <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Duration, Converter={StaticResource DateTimeToCompactDateTimeConverter}}"></TextBlock>
-                        </StackPanel>
-                        <Grid ColumnSpacing="6" VerticalAlignment="Bottom" Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" DataContext="{x:Bind}" Click="DownloadButton_Click" Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}" Background="{ThemeResource AccentFillColorDefaultBrush}">
-                                <StackPanel Orientation="Horizontal" Spacing="6">
-                                    <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE896;"></FontIcon>
-                                    <TextBlock FontSize="12"  VerticalAlignment="Center" >Download</TextBlock>
-                                </StackPanel>
-                            </Button>
-                            <Button Grid.Column="1" ToolTipService.ToolTip="Play">
-                                <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE768;"/>
-                            </Button>
-                            <Button Grid.Column="2" ToolTipService.ToolTip="Copy link">
-                                <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE71B;"/>
-                            </Button>
-                            <Button Grid.Column="3" >
-                                <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE712;"/>
-                            </Button>
+                            <StackPanel  Orientation="Horizontal" Grid.Row="2" Spacing="6">
+                                <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Date, Converter={StaticResource DateTimeToCompactDateTimeConverter}}"></TextBlock>
+                                <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" VerticalAlignment="Center" FontSize="6">⬤</TextBlock>
+                                <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}" Text="{x:Bind Duration, Converter={StaticResource DateTimeToCompactDateTimeConverter}}"></TextBlock>
+                            </StackPanel>
+                            <Grid ColumnSpacing="6" VerticalAlignment="Bottom" Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <DropDownButton Grid.Column="0" DataContext="{x:Bind}" Style="{StaticResource AccentButtonStyle}">
+                                    <DropDownButton.Content>
+                                        <StackPanel Orientation="Horizontal" Spacing="6">
+                                            <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE896;"></FontIcon>
+                                            <TextBlock FontSize="12"  VerticalAlignment="Center" >Download</TextBlock>
+                                        </StackPanel>
+                                    </DropDownButton.Content>
+                                    
+                                    <DropDownButton.Flyout>
+                                        <MenuFlyout Placement="Bottom">
+                                            <MenuFlyoutItem Text="Video">
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE714;"></FontIcon>
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                            <MenuFlyoutItem Text="Audio">
+                                                <MenuFlyoutItem.Icon>
+                                                    <FontIcon Glyph="&#xE8D6;"></FontIcon>
+                                                </MenuFlyoutItem.Icon>
+                                            </MenuFlyoutItem>
+                                        </MenuFlyout>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
+                                <Button Grid.Column="1" ToolTipService.ToolTip="Play">
+                                    <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE768;"/>
+                                </Button>
+                                <Button Grid.Column="2" ToolTipService.ToolTip="Copy link">
+                                    <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE71B;"/>
+                                </Button>
+                                <Button Grid.Column="3" >
+                                    <FontIcon FontSize="12" VerticalAlignment="Center" Glyph="&#xE712;"/>
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Grid>
-                </Grid>
-            </ItemContainer>
-        </DataTemplate>
-
+                </ItemContainer>
+            </DataTemplate>
+        </ResourceDictionary>
+    
     </local:ResultsPage.Resources>
 
     <Grid>
-        <ItemsView SelectionMode="None" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource ResultsTemplate}" ItemsSource="{x:Bind Results}"></ItemsView>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <controls:ResultsProgressBar DataContext="{x:Bind IsLoading,Mode=OneWay}"/>
+        <ListView Grid.Row="1" SelectionMode="None" HorizontalAlignment="Stretch" ItemTemplate="{StaticResource VideoResultsTemplate}" ItemsSource="{x:Bind Results}">
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <AddDeleteThemeTransition></AddDeleteThemeTransition>
+                    <ContentThemeTransition></ContentThemeTransition>
+                    <EntranceThemeTransition IsStaggeringEnabled="True"></EntranceThemeTransition>
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
+        </ListView>
+        
     </Grid>
 </local:ResultsPage>

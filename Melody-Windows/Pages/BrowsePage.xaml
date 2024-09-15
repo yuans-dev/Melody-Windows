@@ -9,7 +9,7 @@
     xmlns:melody="using:Melody"
     xmlns:converters="using:Melody_Windows.Converters"
     mc:Ignorable="d"
-    NavigationCacheMode="Enabled"
+    NavigationCacheMode="Required"
     Background="{ThemeResource AcrylicInAppFillColorBaseBrush}">
 
     <Grid Padding="12,12,12,12">

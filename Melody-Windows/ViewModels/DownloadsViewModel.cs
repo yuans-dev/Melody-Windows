@@ -21,11 +21,12 @@ namespace Melody_Windows.ViewModels
 
         private async void Downloads_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Debug.WriteLine("Collection changed");
-            foreach(DownloadItem newItem in e.NewItems)
+            MainWindow.CurrentInstance.DownloadInfoBadgeValue = 1;
+            foreach (DownloadItem newItem in e.NewItems)
             {
                 var downloadedFile = await Downloader.Download(newItem);
                 await downloadedFile.SetMetadata(newItem.Media);
+               
             }
         }
     }

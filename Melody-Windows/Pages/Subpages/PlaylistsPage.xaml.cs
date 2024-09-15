@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -28,10 +29,10 @@ namespace Melody_Windows.Pages.Subpages
         {
             this.InitializeComponent();
         }
-        protected override void Browse(string query)
+        protected async override Task Browse(string query)
         {
             Results.Clear();
-            var results = Spotify.BrowsePlaylists(query, CancellationTokenSource.Token, Results);
+            await Spotify.BrowsePlaylists(query, CancellationTokenSource.Token, Results);
         }
     }
 }

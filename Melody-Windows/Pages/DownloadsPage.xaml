@@ -15,9 +15,19 @@
         <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
         <converters:DateTimeToCompactDateTimeConverter x:Key="DateTimeToCompactDateTimeConverter"/>
         <converters:ProgressConverter x:Key="ProgressConverter"/>
+        <converters:StatusToActionConverter x:Key="StatusToActionConverter"/>
         <DataTemplate x:Key="ResultsTemplate" x:DataType="melody:DownloadItem">
             <ItemContainer HorizontalAlignment="Stretch" Height="128" AutomationProperties.Name="{x:Bind Media.Title}">
+                
                 <Grid ColumnSpacing="12" Padding="6" HorizontalAlignment="Stretch">
+                    <Grid.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem DataContext="{x:Bind}" Text="{x:Bind Status, Mode=OneWay, Converter={StaticResource StatusToActionConverter}}"></MenuFlyoutItem>
+                            <MenuFlyoutSeparator></MenuFlyoutSeparator>
+                            <MenuFlyoutItem DataContext="{x:Bind}" Text="Remove"></MenuFlyoutItem>
+                            <MenuFlyoutItem DataContext="{x:Bind}" Text="Remove and delete"></MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Grid.ContextFlyout>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -50,8 +60,10 @@
     </Page.Resources>
     <Grid Padding="12,12,12,12">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ItemsView SelectionMode="None" HorizontalAlignment="Stretch" Grid.Row="2" ItemTemplate="{StaticResource ResultsTemplate}" ItemsSource="{Binding Downloads}"></ItemsView>
+        <TextBlock Foreground="{ThemeResource TextFillColorTertiaryBrush}">Downloads will appear here</TextBlock>
+        <ItemsView SelectionMode="None" HorizontalAlignment="Stretch" Grid.Row="1" ItemTemplate="{StaticResource ResultsTemplate}" ItemsSource="{Binding Downloads}"></ItemsView>
     </Grid>
 </Page>

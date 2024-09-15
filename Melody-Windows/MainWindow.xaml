@@ -6,8 +6,8 @@
     xmlns:local="using:Melody_Windows"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Melody_Windows.Controls"
-    mc:Ignorable="d">
-
+    mc:Ignorable="d"
+    xmlns:converters="using:Melody_Windows.Converters">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -17,7 +17,16 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Tag="Home" Icon="Home" Content="Home"/>
                 <NavigationViewItem Tag="Browse"  Icon="Find" Content="Browse"/>
-                <NavigationViewItem Tag="Downloads" Icon="Download" Content="Downloads"/>
+                <NavigationViewItem Tag="Downloads" Icon="Download" Content="Downloads">
+                    <NavigationViewItem.InfoBadge>
+                        <InfoBadge x:Name="downloadInfoBadge" Opacity="{x:Bind DownloadInfoBadgeValue,Mode=OneWay}"  Style="{StaticResource AttentionIconInfoBadgeStyle}">
+                            <InfoBadge.OpacityTransition>
+                                <ScalarTransition/>
+                            </InfoBadge.OpacityTransition>
+                        </InfoBadge>
+
+                    </NavigationViewItem.InfoBadge>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <Frame x:Name="contentFrame"/>

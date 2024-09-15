@@ -32,5 +32,11 @@ namespace Melody_Windows.Pages
             this.DataContext = (DownloadsViewModel)Application.Current.Resources["DownloadsViewModel"];
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            MainWindow.CurrentInstance.DownloadInfoBadgeValue = 0;
+        }
+
     }
 }

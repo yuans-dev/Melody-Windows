@@ -1,3 +1,4 @@
+using Melody_Windows.Controls;
 using Melody_Windows.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -8,6 +9,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -23,14 +25,29 @@ namespace Melody_Windows
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow : Window, INotifyPropertyChanged
     {
         public MainWindow()
         {
             this.InitializeComponent();
             ExtendsContentIntoTitleBar = true;
+            CurrentInstance = this;
         }
-
+        public static MainWindow CurrentInstance;
+        private double _DownloadInfoBadgeValue = 0;
+        public double DownloadInfoBadgeValue
+        {
+            get
+            {
+                return _DownloadInfoBadgeValue;
+            }
+            set
+            {
+                _DownloadInfoBadgeValue = value;
+                OnPropertyChanged(nameof(DownloadInfoBadgeValue));
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
         private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
             if (args.IsSettingsSelected)
@@ -52,10 +69,15 @@ namespace Melody_Windows
                 }
             }
         }
+        
 
         private void navView_Loaded(object sender, RoutedEventArgs e)
         {
             navView.SelectedItem = navView.MenuItems[0];
+        }
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

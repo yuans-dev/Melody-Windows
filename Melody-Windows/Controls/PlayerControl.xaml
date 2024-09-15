@@ -10,6 +10,11 @@
     HorizontalAlignment="Stretch"
     mc:Ignorable="d">
 
+    <UserControl.Resources>
+        <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"></converters:AuthorsToStringConverter>
+        <converters:DateTimeToCompactDateTimeConverter x:Key="DateTimeToCompactDateTimeConverter"></converters:DateTimeToCompactDateTimeConverter>
+        <converters:VolumeToGlyphConverter x:Key="VolumeToGlyphConverter"/>
+    </UserControl.Resources>
     <Grid Height="128" x:Name="player" Padding="12,2,12,2"  Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
         <Grid.Resources>
       
@@ -56,7 +61,7 @@
             </Storyboard>
 
         </Grid.Resources>
-        <Button Background="Transparent" BorderBrush="Transparent" Click="expandCollapse_Click" HorizontalAlignment="Right" VerticalAlignment="Top">
+        <Button Background="Transparent" BorderBrush="Transparent" Click="ExpandCollapse_Click" HorizontalAlignment="Right" VerticalAlignment="Top">
             <FontIcon Glyph="&#xE70D;">
                 <FontIcon.RenderTransform>
                     <RotateTransform x:Name="buttonTransform" CenterX="9.5" CenterY="7"></RotateTransform>
@@ -68,12 +73,46 @@
                 <TranslateTransform x:Name="controlsTransform" Y="0"></TranslateTransform>
             </Grid.RenderTransform>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-
-            <TextBlock FontSize="12" VerticalAlignment="Center" Grid.Column="0">00:00</TextBlock>
-            <Slider VerticalAlignment="Center" Grid.Column="1"></Slider>
+            <Grid Grid.Column="0" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid  Grid.Column="0" CornerRadius="{StaticResource ControlCornerRadius}" Margin="12,12,12,12">
+                    <Image  Source="{x:Bind CurrentMedia.ImageURL, Mode=OneWay}"></Image>
+                </Grid>
+                
+                <Grid  Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" VerticalAlignment="Bottom" FontSize="14" FontWeight="Bold" Text="{x:Bind CurrentMedia.Title, Mode=OneWay}"></TextBlock>
+                    <TextBlock Grid.Row="1" VerticalAlignment="Top" FontSize="14" Text="{x:Bind CurrentMedia.Authors, Mode=OneWay,Converter={StaticResource AuthorsToStringConverter}}" Foreground="{ThemeResource TextFillColorTertiaryBrush}" ></TextBlock>
+                </Grid>
+            </Grid>
+            <TextBlock FontSize="12" VerticalAlignment="Center" Grid.Column="1">--:--</TextBlock>
+            <Slider VerticalAlignment="Center" Grid.Column="2"></Slider>
+            <TextBlock FontSize="12" VerticalAlignment="Center" Grid.Column="3" Text="{x:Bind CurrentMedia.Duration, Mode=OneWay,Converter={StaticResource DateTimeToCompactDateTimeConverter}}">--:--</TextBlock>
+            <Grid Padding="96,12,12,12" Grid.Column="4" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource AccentButtonStyle}" x:Name="VolumeButton" Click="VolumeButton_Click">
+                    <FontIcon Glyph="{x:Bind Volume,Mode=OneWay,Converter={StaticResource VolumeToGlyphConverter}}" Grid.Column="0"/>
+                </Button>
+                <Slider VerticalAlignment="Center" Grid.Column="1" Value="{x:Bind Volume,Mode=TwoWay}">
+               
+                </Slider>
+            </Grid>
+            
         </Grid>
         
     </Grid>
