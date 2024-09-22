@@ -17,23 +17,22 @@
     </UserControl.Resources>
     <Grid Height="128" x:Name="player" Padding="12,2,12,2"  Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
         <Grid.Resources>
-      
             <Storyboard x:Name="collapse">
                 <DoubleAnimation Duration="00:00:00.300" Storyboard.TargetProperty="Angle" Storyboard.TargetName="buttonTransform" From="0" To="180">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseInOut" />
 
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
                 <DoubleAnimation Duration="00:00:00.300" Storyboard.TargetProperty="Y" Storyboard.TargetName="controlsTransform" From="0" To="100">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseInOut" />
 
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
                 <DoubleAnimation EnableDependentAnimation="True" Duration="00:00:00.300" Storyboard.TargetProperty="Height" Storyboard.TargetName="player" From="128" To="32">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseInOut" />
 
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
@@ -42,25 +41,25 @@
                 <!--Button Animation-->
                 <DoubleAnimation Duration="00:00:00.1" Storyboard.TargetProperty="Angle" Storyboard.TargetName="buttonTransform" From="180" To="0">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase Exponent="4.5" EasingMode="EaseIn" />
+                        <ExponentialEase Exponent="4.5" EasingMode="EaseInOut" />
 
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
                 <!--Controls Animation-->
                 <DoubleAnimation Duration="00:00:00.300" Storyboard.TargetProperty="Y" Storyboard.TargetName="controlsTransform" From="100" To="0">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase Exponent="7" EasingMode="EaseOut" />
+                        <ExponentialEase Exponent="7" EasingMode="EaseInOut" />
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
                 <!--Expand Animation-->
                 <DoubleAnimation EnableDependentAnimation="True" Duration="00:00:00.300" Storyboard.TargetProperty="Height" Storyboard.TargetName="player" From="32" To="128">
                     <DoubleAnimation.EasingFunction>
-                        <ExponentialEase Exponent="7" EasingMode="EaseOut" />
+                        <ExponentialEase Exponent="7" EasingMode="EaseInOut" />
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
             </Storyboard>
-
         </Grid.Resources>
+        <MediaPlayerElement Opacity="0" IsHitTestVisible="False"></MediaPlayerElement>
         <Button Background="Transparent" BorderBrush="Transparent" Click="ExpandCollapse_Click" HorizontalAlignment="Right" VerticalAlignment="Top">
             <FontIcon Glyph="&#xE70D;">
                 <FontIcon.RenderTransform>

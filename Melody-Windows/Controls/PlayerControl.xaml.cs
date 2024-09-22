@@ -54,7 +54,20 @@ namespace Melody_Windows.Controls
                 OnPropertyChanged(nameof(Expanded));
             }
         }
-        private int _Volume = 50;
+        private bool _IsLoading = false;
+        private bool IsLoading
+        {
+            get
+            {
+                return _IsLoading;
+            }
+            set
+            {
+                _IsLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+        private int _Volume = 80;
         private int Volume
         {
             get
