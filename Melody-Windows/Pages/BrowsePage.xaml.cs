@@ -54,7 +54,7 @@ namespace Melody_Windows.Pages
 
             ExecuteQuery(sender.Text, selectedItem.Tag.ToString().ParseSearchType());
         }
-        private readonly ObservableCollection<Media> Results;
+        private readonly ObservableCollection<SingleMedia> Results;
 
         private void BrowseSelectorBar_SelectionChanged(SelectorBar sender, SelectorBarSelectionChangedEventArgs args)
         {

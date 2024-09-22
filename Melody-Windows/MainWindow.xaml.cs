@@ -32,11 +32,11 @@ namespace Melody_Windows
             this.InitializeComponent();
             ExtendsContentIntoTitleBar = true;
             pageHistoryStack = new Stack<Type>();
+            CurrentInstance = this;
         }
         private readonly Stack<Type> pageHistoryStack;
         private bool IsGoingBack = false;
-            CurrentInstance = this;
-        }
+            
         public static MainWindow CurrentInstance;
         private double _DownloadInfoBadgeValue = 0;
         public double DownloadInfoBadgeValue
@@ -54,6 +54,7 @@ namespace Melody_Windows
         public event PropertyChangedEventHandler PropertyChanged;
         private void navView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
         {
+            Type pageType = null;
             if (args.IsSettingsSelected)
             {
                 sender.Header = "Settings";
@@ -68,9 +69,13 @@ namespace Melody_Windows
                     sender.Header = selectedItemTag;
                     string pageName = "Melody_Windows.Pages." + selectedItemTag;
                     Debug.WriteLine(pageName + "Page");
-                    Type pageType = Type.GetType(pageName + "Page");
-                    contentFrame.Navigate(pageType);
+                    pageType = Type.GetType(pageName + "Page");
                 }
+            }
+            if(pageType != null)
+            {
+                pageHistoryStack.Push(pageType);
+                contentFrame.Navigate(pageType);
             }
         }
         
@@ -90,6 +95,8 @@ namespace Melody_Windows
                 IsGoingBack = true;
                 var pageType = pageHistoryStack.Pop();
                 sender.SelectedItem = SelectNavigationViewItemFromTag(pageType.Name.Substring(0, pageType.Name.Length - 4));
+
+                contentFrame.Navigate(pageType);
             }
         }
         private NavigationViewItem SelectNavigationViewItemFromTag(string tag)
